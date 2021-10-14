@@ -1,0 +1,20 @@
+name: shop_repository
+description: A new Flutter package project.
+version: 0.0.1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  equatable: ^2.0.3
+  hive: ^2.0.4
+  path_provider: ^2.0.5
+  shop_api:
+    path: ../shop_api
+
+dev_dependencies:
+  coverage: ^1.0.3
+  hive_generator: ^1.1.1
+  build_runner: ^1.10.0
+  mocktail: ^0.1.0
+  test: ^1.16.4

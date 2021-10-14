@@ -15,6 +15,8 @@ class ShopApiClient {
   static const _apiPath = '/photos';
   static const _loadLimit = 20;
 
+  int get loadingLimit => _loadLimit;
+
   final http.Client _httpClient;
 
   /// Load from fake json gen
