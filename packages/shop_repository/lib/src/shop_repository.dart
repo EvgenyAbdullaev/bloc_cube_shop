@@ -1,9 +1,10 @@
-import 'package:shop_api/shop_api.dart';
-import 'package:shop_repository/shop_repository.dart';
+import 'dart:math' as math;
+
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'dart:math' as math;
+import 'package:shop_api/shop_api.dart';
+import 'package:shop_repository/shop_repository.dart';
 
 class ShopRepository {
   ShopRepository({ShopApiClient? shopApiClient})
