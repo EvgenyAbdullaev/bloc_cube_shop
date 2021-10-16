@@ -1,10 +1,17 @@
 part of 'mlist_bloc.dart';
 
 abstract class MlistState extends Equatable {
-  const MlistState();
-}
-
-class MlistInitial extends MlistState {
   @override
   List<Object> get props => [];
+
 }
+
+class MlistInitial extends MlistState { }
+
+class MlistLoading extends MlistState { }
+
+class MlistLoaded extends MlistState { }
+
+class MlistDid extends MlistState { }
+
+class MlistUpdate extends MlistState { }

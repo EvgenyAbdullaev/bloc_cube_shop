@@ -18,9 +18,11 @@ class ShopRepository {
   int _maxLoadedID = 0;
   int get maxLoadedIDTest => _maxLoadedID;    //temp var, del on production
 
-  void init() async {
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  Future<void> init() async {
     var dir = await getApplicationDocumentsDirectory();
-    print('path: ${dir.path}');
 
     Hive
       ..init(dir.path)
@@ -29,6 +31,8 @@ class ShopRepository {
     _storage = await Hive.openBox<HiveProduct>(_storageBox);
     _settings = await Hive.openBox(_settingsBox);
     _maxLoadedID = await _settings.get(_maxIDKey) ?? 0;
+
+    return Future.value();
   }
 
   Iterable<HiveProduct> get data {
@@ -39,7 +43,11 @@ class ShopRepository {
     }
   }
 
-  void loadData() async {
+  Future<void> loadData() async {
+    if (_isLoading) return Future.value();
+
+    _isLoading = true;
+
     final netList = await _shopApiClient.loadList(_maxLoadedID);
     netList.forEach((element) {
       _storage.add(HiveProduct(
@@ -51,16 +59,22 @@ class ShopRepository {
 
     _maxLoadedID += _shopApiClient.loadingLimit;
     _settings.put(_maxIDKey, _maxLoadedID);
+
+    _isLoading = false;
+
+    return Future.value();
   }
 
-  void genRandomElem() {
+  Future<void> genRandomElem() async {
     int idRand = math.Random().nextInt(_defaultProducts.length-1);
     HiveProduct randElem = _defaultProducts[idRand];
-    _storage.add(randElem);
+    await _storage.add(randElem);
+    return Future.value();
   }
 
-  void delElem(int id) {
-    _storage.deleteAt(id);
+  Future<void> delElem(int id) async {
+    await _storage.deleteAt(id);
+    return Future.value();
   }
 
   static const _settingsBox = 'settingsBox';
@@ -69,14 +83,14 @@ class ShopRepository {
 
   final List<HiveProduct> _defaultProducts = [
     HiveProduct(id: 5001, title: 'rand-1',
-        url: 'https://via.placeholder.com/600/000000'),
+        url: 'https://via.placeholder.com/600/ffffff'),
     HiveProduct(id: 5002, title: 'rand-2',
-        url: 'https://via.placeholder.com/600/000000'),
+        url: 'https://via.placeholder.com/600/ffffff'),
     HiveProduct(id: 5003, title: 'rand-3',
-        url: 'https://via.placeholder.com/600/000000'),
+        url: 'https://via.placeholder.com/600/ffffff'),
     HiveProduct(id: 5004, title: 'rand-4',
-        url: 'https://via.placeholder.com/600/000000'),
+        url: 'https://via.placeholder.com/600/ffffff'),
     HiveProduct(id: 5005, title: 'rand-5',
-        url: 'https://via.placeholder.com/600/000000')
+        url: 'https://via.placeholder.com/600/ffffff')
   ];
 }
